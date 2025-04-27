@@ -1,4 +1,3 @@
-
 # PermiForce: Azure DevOps PR Approval System with Permit.io
 
   
@@ -39,7 +38,36 @@ A robust Pull Request approval system that enforces role-based access control fo
 
 PermiForce is a sophisticated Pull Request approval system that integrates Azure DevOps with Permit.io's fine-grained permission control. It ensures that only authorized personnel can approve and merge code changes into protected branches, maintaining code quality and security.
 
-  
+## 🎯 **Motive: Why PermiForce?**
+
+**PermiForce** solves key challenges in modern software development by providing enhanced security, compliance, and developer-friendly processes.
+
+| **Aspect** | **Benefits** | **Key Features** |
+|------------|-------------|------------------|
+| **🔒 Enhanced Security** | - Prevents unauthorized changes<br>- Ensures proper access control | - Fine-grained PR-level access control<br>- Principle of Least Privilege<br>- Protected branch management |
+| **📑 Compliance & Audit** | - Ensures regulatory compliance<br>- Provides accountability | - Comprehensive audit trails<br>- Clear role separation<br>- Transparent approval tracking |
+| **👨‍💻 Developer Experience** | - Faster development cycles<br>- Reduced friction in PR process | - Streamlined PR approvals<br>- Self-service access management<br>- Real-time permission feedback |
+| **💼 Business Benefits** | - Reduced deployment risks<br>- Improved release management | - Controlled deployments<br>- Faster approval cycles<br>- Better release visibility |
+| **⚙️ Technical Advantages** | - Simplified permission management<br>- Scalable solution | - Centralized permission control<br>- Real-time validation<br>- Easy Azure DevOps integration |
+
+---
+
+### 📝 **Comparison: Azure DevOps vs. Permit.io**
+
+| **Feature**                         | **Azure DevOps** | **Permit.io**                |
+|-------------------------------------|------------------|------------------------------|
+| **Granular Access Control**         | ❌ Limited       | ✅ Fine-grained PR-level control |
+| **Role-Based Access**               | ✅ Basic         | ✅ Advanced (Custom Roles)    |
+| **Audit Trails for Approvals**      | ❌ Limited       | ✅ Full audit trail & visibility |
+| **Real-Time Permission Validation** | ❌ Delayed       | ✅ Instant validation via API |
+| **Compliance Reporting**            | ❌ Complex       | ✅ Simple & automated reports |
+
+---
+
+### **Why Permit.io?**
+
+- **Azure DevOps** lacks precise, dynamic PR-level access control.
+- **Permit.io** fills the gap by providing granular role-based permissions, streamlined compliance tracking, and enhanced security for DevOps workflows.
 
 ## Core Concepts
 
@@ -61,59 +89,11 @@ The system is built around three main components:
 
   
 
-### Role-Based Access Structure
-
-  
-
-1.  **Developer Role**
-
-- Primary permission: `CREATE_QA_PR`
-
-- Can create Pull Requests to QA branch only
-
-- Cannot approve any PRs
-
-- Users: alice@permiforce.com, bob@permiforce.com
-
-  
-
-2.  **Team Lead Role**
-
-- Permissions:
-
--  `CREATE_UAT_PR`: Can create PRs to UAT
-
--  `APPROVE_QA_PR`: Can approve PRs to QA
-
--  `APPROVE_UAT_PR`: Can approve PRs to UAT
-
-- Cannot create or approve Production PRs
-
-- User: carol@permiforce.com
-
-  
-
-3.  **Release Manager Role**
-
-- Full access with all permissions:
-
--  `APPROVE_PROD_PR`: Approve Production PRs
-
--  `APPROVE_QA_PR`: Approve QA PRs
-
--  `APPROVE_UAT_PR`: Approve UAT PRs
-
--  `CREATE_PROD_PR`: Create Production PRs
-
--  `CREATE_QA_PR`: Create QA PRs
-
--  `CREATE_UAT_PR`: Create UAT PRs
-
-- Highest level of authorization
-
-- User: shivamsfdc.work@gmail.com
-
-  
+| **Role** | **Permissions** | **Users** | **Branch Access** |
+|----------|----------------|-----------|------------------|
+| **👨‍💻 Developer** | - `CREATE_QA_PR`<br>- Cannot approve any PRs | - alice@permiforce.com<br>- bob@permiforce.com | ✅ Can create PRs to QA<br>❌ Cannot create PRs to UAT<br>❌ Cannot create PRs to PROD |
+| **👨‍💼 Team Lead** | - `CREATE_UAT_PR`<br>- `APPROVE_QA_PR`<br>- `APPROVE_UAT_PR` | - carol@permiforce.com | ✅ Can create PRs to UAT<br>✅ Can approve QA/UAT PRs<br>❌ Cannot create/approve PROD PRs |
+| **👨‍💼 Release Manager** | - `APPROVE_PROD_PR`<br>- `APPROVE_QA_PR`<br>- `APPROVE_UAT_PR`<br>- `CREATE_PROD_PR`<br>- `CREATE_QA_PR`<br>- `CREATE_UAT_PR` | - shivamsfdc.work@gmail.com | ✅ Full access to all branches<br>✅ Can create PRs to any branch<br>✅ Can approve any PR |
 
 ### Detailed Permission Matrix
 
@@ -308,16 +288,78 @@ USER_NAME: [User's Email For Simulation]
 
 ## Permission Structure
 
-The APPROVE_PROD_PR permission is the highest level of approval permission in the system. It:
+The permission system in PermiForce is designed with a hierarchical structure that ensures secure and controlled access to different environments. Here's a detailed breakdown:
 
-- Is exclusively granted to Release Managers
+### 🔐 Permission Hierarchy
 
-- Required for merging code into the production branch
+| **Level** | **Permission** | **Description** | **Required For** |
+|-----------|----------------|-----------------|------------------|
+| **Level 1** | `CREATE_QA_PR` | Create PRs to QA branch | Developers, Team Leads, Release Managers |
+| **Level 2** | `APPROVE_QA_PR` | Approve PRs to QA branch | Team Leads, Release Managers |
+| **Level 3** | `CREATE_UAT_PR` | Create PRs to UAT branch | Team Leads, Release Managers |
+| **Level 4** | `APPROVE_UAT_PR` | Approve PRs to UAT branch | Team Leads, Release Managers |
+| **Level 5** | `CREATE_PROD_PR` | Create PRs to Production branch | Release Managers Only |
+| **Level 6** | `APPROVE_PROD_PR` | Approve PRs to Production branch | Release Managers Only |
 
-- Cannot be delegated to lower-level roles
+### 🛡️ Security Controls
 
-- Requires additional validation checks in the pipeline
+| **Control** | **Implementation** | **Purpose** |
+|-------------|-------------------|-------------|
+| **Least Privilege** | Role-based access with minimal required permissions | Minimize security risks |
+| **Separation of Duties** | Different roles for creation and approval | Prevent unauthorized changes |
+| **Audit Trail** | Log all permission checks and approvals | Track and monitor access |
+| **Real-time Validation** | Instant permission checks via Permit.io | Prevent unauthorized actions |
 
+### 🔄 Permission Flow
+
+```mermaid
+graph TD
+    A[Developer] -->|CREATE_QA_PR| B[QA Branch]
+    C[Team Lead] -->|APPROVE_QA_PR| B
+    C -->|CREATE_UAT_PR| D[UAT Branch]
+    C -->|APPROVE_UAT_PR| D
+    E[Release Manager] -->|APPROVE_PROD_PR| F[Production Branch]
+    E -->|CREATE_PROD_PR| F
+    E -->|All Permissions| B
+    E -->|All Permissions| D
+```
+
+### ⚠️ Critical Permissions
+
+The `APPROVE_PROD_PR` permission is the highest level of approval in the system:
+
+- **Exclusive Access**: Only granted to Release Managers
+- **No Delegation**: Cannot be delegated to lower-level roles
+- **Additional Checks**: Requires extra validation in the pipeline
+- **Audit Requirements**: All approvals are logged with detailed metadata
+
+### 🔍 Permission Validation Process
+
+1. **Initial Check**
+   - User attempts to create/approve PR
+   - System validates user's role and permissions
+   - Permit.io API is called for real-time validation
+
+2. **Branch Protection**
+   - System checks target branch protection rules
+   - Validates required number of approvals
+   - Ensures approvers have correct permissions
+
+3. **Final Approval**
+   - All checks must pass
+   - Audit trail is updated
+   - PR can be merged if all conditions are met
+
+### 📊 Permission Matrix
+
+| **Action** | **Developer** | **Team Lead** | **Release Manager** |
+|------------|--------------|---------------|---------------------|
+| **Create QA PR** | ✅ | ✅ | ✅ |
+| **Approve QA PR** | ❌ | ✅ | ✅ |
+| **Create UAT PR** | ❌ | ✅ | ✅ |
+| **Approve UAT PR** | ❌ | ✅ | ✅ |
+| **Create PROD PR** | ❌ | ❌ | ✅ |
+| **Approve PROD PR** | ❌ | ❌ | ✅ |
 
 ## Testing the System
 
@@ -442,389 +484,95 @@ end
 
   
 
-| Component | File | Purpose | Key Features |
+| **Component** | **File** | **Purpose** | **Key Features** |
+|--------------|----------|-------------|------------------|
+| **🚀 Main Pipeline** | `main-pipeline.yml` | Orchestrates the entire process | - PR-based triggers<br>- Environment setup<br>- Sequential checks<br>- Error handling |
+| **🔐 Access Check** | `check-access.yml` | Validates PR creation permissions | - Branch mapping<br>- Permission validation<br>- User role verification<br>- Real-time checks |
+| **✅ Approval Check** | `check-approval.yml` | Validates PR approver permissions | - Reviewer validation<br>- Role checking<br>- Approval requirements<br>- Audit logging |
+| **📊 Code Validation** | `check-code.yml` | Validates code quality | - Quality checks<br>- Standards enforcement<br>- Security scanning<br>- Performance metrics |
 
-|-----------|------|---------|--------------|
-
-| Main Pipeline |  `main-pipeline.yml`  | Orchestrates the entire process | - Triggers on PR<br>- Sets up environment<br>- Runs checks |
-
-| Access Check |  `check-access.yml`  | Validates PR creation permissions | - Branch mapping<br>- Permission validation |
-
-| Approval Check |  `check-approval.yml`  | Validates PR approver permissions | - Reviewer validation<br>- Role checking |
-
-| Code Validation |  `check-code.yml`  | Validates code quality | - Quality checks<br>- Standards enforcement |
-
-  
-
-### Pipeline Flow
-
-  
-
-1.  **Pipeline Trigger** (`main-pipeline.yml`)
-
-```yaml
-
-trigger:
-
--  main
-
-pr:
-
-branches:
-
-include:
-
--  qa
-
--  uat
-
--  prod
-
-```
-
-- Activates when PR is created targeting protected branches
-
-- Sets up environment variables and starts permission server
-
-  
-
-2.  **Permission Server Setup**
+### 🔄 Pipeline Flow
 
 ```mermaid
-
 sequenceDiagram
+    participant PR as Pull Request
+    participant MP as Main Pipeline
+    participant AC as Access Check
+    participant AP as Approval Check
+    participant CV as Code Validation
+    participant P as Permit.io
 
-participant P as Pipeline
-
-participant S as Server
-
-participant D as Permit.io
-
-P->>S: Start Server
-
-S->>S: Initialize
-
-S->>D: Connect
-
-S->>P: Ready
-
-Note over S,D: Continuous Connection
-
+    PR->>MP: Trigger Pipeline
+    MP->>AC: Validate Access
+    AC->>P: Check Permissions
+    P-->>AC: Permission Result
+    AC-->>MP: Access Status
+    
+    MP->>AP: Validate Approvers
+    AP->>P: Check Approver Roles
+    P-->>AP: Role Validation
+    AP-->>MP: Approval Status
+    
+    MP->>CV: Run Code Checks
+    CV-->>MP: Code Quality Status
+    
+    MP-->>PR: Final Status
 ```
 
-- Initializes Node.js server (`permit-server.js`)
-
-- Establishes connection with Permit.io
-
-- Provides REST endpoints for permission checks
-
-  
-
-3.  **Access Check Flow**
-
-```mermaid
-
-sequenceDiagram
-
-participant U as User
-
-participant P as Pipeline
-
-participant S as Server
-
-participant D as Permit.io
-
-U->>P: Create PR
-
-P->>S: Check Permission
-
-S->>D: Validate
-
-D-->>S: Response
-
-S-->>P: Allow/Deny
-
-P-->>U: Result
-
-```
-
-  
-
-### Server Components
-
-  
-
-1.  **Permit Server** (`scripts/permit-server.js`)
-
-```javascript
-
-const  permit  =  new  Permit({
-
-pdp:  process.env.PERMIT_PDP_URL,
-
-token:  process.env.PERMIT_API_KEY,
-
-});
-
-```
-
-  
-
-| Endpoint | Purpose | Response |
-
-|----------|---------|----------|
-
-|  `/check-access`  | Validates PR creation | Allow/Deny with details |
-
-|  `/check-pr-approval`  | Validates approver | Allow/Deny with role check |
-
-|  `/health`  | Server health check | Status with environment info |
-
-  
-
-2.  **Permission Check** (`scripts/permit.js`)
-
-```javascript
-
-async  function  checkAccess(user,  action,  resource)  {
-
-const  allowed  =  await  permit.check(user,  action,  resource);
-
-return  allowed;
-
-}
-
-```
-
-  
-
-### Branch-Specific Workflows
-
-  
-
-1.  **QA Branch Workflow**
-
-```mermaid
-
-stateDiagram-v2
-
-[*] --> CreatePR
-
-CreatePR --> CheckPermission
-
-CheckPermission --> ValidateApprover
-
-ValidateApprover --> MergePR
-
-ValidateApprover --> RejectPR
-
-state CheckPermission {
-
-[*] --> CREATE_QA_PR
-
-CREATE_QA_PR --> [*]
-
-}
-
-state ValidateApprover {
-
-[*] --> APPROVE_QA_PR
-
-APPROVE_QA_PR --> [*]
-
-}
-
-```
-
-  
-
-2.  **UAT Branch Workflow**
-
-```mermaid
-
-stateDiagram-v2
-
-[*] --> CreatePR
-
-CreatePR --> CheckPermission
-
-CheckPermission --> ValidateApprover
-
-ValidateApprover --> MergePR
-
-ValidateApprover --> RejectPR
-
-state CheckPermission {
-
-[*] --> CREATE_UAT_PR
-
-CREATE_UAT_PR --> [*]
-
-}
-
-state ValidateApprover {
-
-[*] --> APPROVE_UAT_PR
-
-APPROVE_UAT_PR --> [*]
-
-}
-
-```
-
-  
-
-3.  **Production Branch Workflow**
-
-```mermaid
-
-stateDiagram-v2
-
-[*] --> CreatePR
-
-CreatePR --> CheckPermission
-
-CheckPermission --> ValidateApprover
-
-ValidateApprover --> MergePR
-
-ValidateApprover --> RejectPR
-
-state CheckPermission {
-
-[*] --> CREATE_PROD_PR
-
-CREATE_PROD_PR --> [*]
-
-}
-
-state ValidateApprover {
-
-[*] --> APPROVE_PROD_PR
-
-APPROVE_PROD_PR --> [*]
-
-}
-
-```
-
-  
-
-### Error Handling and Responses
-
-  
-
-1.  **Permission Errors**
-
-```json
-
-{
-
-"error":  "Permission denied",
-
-"details":  "User lacks APPROVE_PROD_PR permission",
-
-"user":  "developer@permiforce.com",
-
-"requiredPermission":  "APPROVE_PROD_PR"
-
-}
-
-```
-
-  
-
-2.  **Server Errors**
-
-```json
-
-{
-
-"error":  "Server unavailable",
-
-"status":  "error",
-
-"details":  "Failed to connect to Permit.io"
-
-}
-
-```
-
-  
-
-### Monitoring and Logging
-
-  
-
-| Aspect | Tools | Purpose |
-
-|--------|-------|---------|
-
-| Permission Checks | Pipeline Logs | Track all permission validations |
-
-| Server Health | Health Endpoint | Monitor server status |
-
-| Error Tracking | Error Logs | Track system issues |
-
-| Performance | Azure DevOps | Monitor pipeline performance |
-
-  
-
-### Common Troubleshooting Scenarios
-
-  
-
-| Issue | Possible Cause | Solution |
-
-|-------|---------------|----------|
-
-| PR Creation Failed | Invalid permissions | Check user role and permissions |
-
-| Approval Failed | Unauthorized approver | Verify approver's role |
-
-| Server Connection Error | Network/Config issues | Check server logs and config |
-
-| Pipeline Timeout | Server not responding | Check server health endpoint |
-
-  
-
-### Best Practices
-
-  
-
-1.  **Permission Management**
-
-- Regularly audit user roles
-
-- Follow principle of least privilege
-
-- Document permission changes
-
-  
-
-2.  **Pipeline Configuration**
-
-- Keep environment variables secure
-
-- Regular health checks
-
-- Proper error handling
-
-  
-
-3.  **Monitoring**
-
-- Set up alerts for failures
-
-- Monitor permission denials
-
-- Track approval patterns
-
-  
+### ⚙️ Environment Configuration
+
+| **Variable** | **Type** | **Description** | **Example** |
+|--------------|----------|-----------------|-------------|
+| `PERMIT_API_KEY` | Secret | Authentication with Permit.io | `pmt_xxxxxxxxxxxx` |
+| `PERMIT_PDP_URL` | URL | PDP endpoint URL | `https://cloudpdp.api.permit.io` |
+| `USER_NAME` | String | Current user's email | `user@example.com` |
+| `NODE_ENV` | String | Environment mode | `production` |
+
+### 🔍 Server Endpoints
+
+| **Endpoint** | **Method** | **Request Body** | **Response** | **Purpose** |
+|-------------|------------|------------------|--------------|-------------|
+| `/check-access` | POST | `{"user": "email", "targetBranch": "branch"}` | `{"allowed": bool, "message": "string"}` | Validates PR creation permissions |
+| `/check-pr-approval` | POST | `{"approvers": ["email"], "targetBranch": "branch"}` | `{"allowed": bool, "message": "string"}` | Validates approver permissions |
+| `/health` | GET | None | `{"status": "string", "environment": "string"}` | Server health monitoring |
+
+### 🛠️ Error Handling
+
+| **Error Type** | **Code** | **Response Format** | **Resolution** |
+|---------------|----------|---------------------|----------------|
+| **Permission Denied** | 403 | `{"error": "Permission denied", "details": "string"}` | Check user roles and permissions |
+| **Invalid Request** | 400 | `{"error": "Invalid request", "details": "string"}` | Validate request parameters |
+| **Server Error** | 500 | `{"error": "Server error", "details": "string"}` | Check server logs and configuration |
+| **Network Error** | 503 | `{"error": "Service unavailable", "details": "string"}` | Verify network connectivity |
+
+### 📈 Monitoring and Logging
+
+| **Aspect** | **Tools** | **Metrics** | **Alert Threshold** |
+|------------|-----------|-------------|---------------------|
+| **Permission Checks** | Pipeline Logs | - Success rate<br>- Response time<br>- Error rate | >5% error rate |
+| **Server Health** | Health Endpoint | - Uptime<br>- Response time<br>- Error count | >1s response time |
+| **Error Tracking** | Error Logs | - Error types<br>- Frequency<br>- Impact | >10 errors/hour |
+| **Performance** | Azure DevOps | - Pipeline duration<br>- Resource usage<br>- Queue time | >15min duration |
+
+### 🔧 Best Practices
+
+| **Category** | **Practice** | **Implementation** | **Benefit** |
+|-------------|--------------|-------------------|-------------|
+| **Permission Management** | Regular audits | Quarterly role reviews | Maintain security |
+| **Pipeline Configuration** | Secure variables | Key vault integration | Protect sensitive data |
+| **Monitoring** | Proactive alerts | Custom alert rules | Early issue detection |
+| **Documentation** | Keep updated | Automated docs | Clear understanding |
+
+### 🚨 Troubleshooting Guide
+
+| **Issue** | **Symptoms** | **Diagnosis** | **Solution** |
+|-----------|--------------|---------------|--------------|
+| **Pipeline Permission Error** | PR creation fails | Check USER_NAME and API key | Verify credentials and permissions |
+| **PR Approval Failure** | Approval rejected | Review approver roles | Update role assignments |
+| **Server Connection Error** | Timeout errors | Check network and config | Verify endpoint accessibility |
+| **Pipeline Timeout** | Job exceeds limit | Review pipeline steps | Optimize pipeline configuration |
 
 ---
-
-  
 
 For more information, contact the project maintainers or visit our documentation.
 
