@@ -195,6 +195,7 @@ end
    PERMIT_PDP_URL: [Your Permit.io PDP URL]
    USER_NAME: [User's Email For Simulation]
    ```
+![Permit Variables](https://raw.githubusercontent.com/shivamkapasia0/PermiForce/main/permit-variables.png)
 
    Learn more about [Azure DevOps Variable Groups](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups).
 
