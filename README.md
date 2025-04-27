@@ -260,6 +260,7 @@ PERMIT_API_KEY: [Your Permit.io API Key]
 PERMIT_PDP_URL: [Your Permit.io PDP URL]
 USER_NAME: [User's Email For Simulation]
 ```
+![Permit Variables](https://raw.githubusercontent.com/shivamkapasia0/PermiForce/main/permit-variables.png)
 
 3.  **Branch Protection Rules**
 - Go to Project Settings > Repositories
