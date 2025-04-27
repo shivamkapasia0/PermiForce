@@ -195,7 +195,6 @@ end
    PERMIT_PDP_URL: [Your Permit.io PDP URL]
    USER_NAME: [User's Email For Simulation]
    ```
-![Permit Variables](https://raw.githubusercontent.com/shivamkapasia0/PermiForce/main/permit-variables.png)
 
    Learn more about [Azure DevOps Variable Groups](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups).
 
@@ -304,6 +303,7 @@ The `APPROVE_PROD_PR` permission is the highest level of approval in the system:
    - Cannot create PR to UAT ❌
    - Cannot create PR to PROD ❌
    ```
+![Success Create QA PR](https://raw.githubusercontent.com/shivamkapasia0/PermiForce/main/SUCCESS_CREATE_QA_PR.png)
 
 2. **Test as Team Lead**
    ```bash
@@ -314,6 +314,7 @@ The `APPROVE_PROD_PR` permission is the highest level of approval in the system:
    - Cannot approve PROD PRs ❌
    - Cannot create QA PRs ❌
    ```
+   ![Error Create QA PR](https://raw.githubusercontent.com/shivamkapasia0/PermiForce/main/ERROR-CREATE_QA_PR.png)
 
 3. **Test as Release Manager**
    ```bash
@@ -323,6 +324,7 @@ The `APPROVE_PROD_PR` permission is the highest level of approval in the system:
    - Can approve all PRs ✅
    - Can create PRs to any branch ✅
    ```
+![Success PR Approval Process](https://raw.githubusercontent.com/shivamkapasia0/PermiForce/main/SUCCESS_PR_APPROVAL_PROCESS.png)
 
 ## Troubleshooting
 
