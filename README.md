@@ -266,6 +266,7 @@ USER_NAME: [User's Email For Simulation]
 - Set up branch policies for qa, uat, and prod branches
 - Enable "Require a minimum number of reviewers"
 
+***Please do visit for more details on code:*** https://dev.azure.com/shivamsfdcwork/PermiForce/_git/PermiForce?version=GBprod&path=/main-pipeline.yml
 ### Permit.io Setup
 
 1.  **Create a New Project**
@@ -375,6 +376,8 @@ user_name: alice@permiforce.com
 - Cannot create PR to UAT ❌
 - Cannot create PR to PROD ❌
 ```
+![Success Create QA PR](https://raw.githubusercontent.com/shivamkapasia0/PermiForce/main/SUCCESS_CREATE_QA_PR.png)
+
 
 2.  **Test as Team Lead**
 
@@ -384,7 +387,10 @@ user_name: carol@permiforce.com
 # Expected Results:
 - Can approve QA/UAT PRs ✅
 - Cannot approve PROD PRs ❌
+- Cannot create QA PRs ❌
 ```
+![Error Create QA PR](https://raw.githubusercontent.com/shivamkapasia0/PermiForce/main/ERROR-CREATE_QA_PR.png)
+
 
 3.  **Test as Release Manager**
 
@@ -395,6 +401,7 @@ user_name: shivamsfdc.work@gmail.com
 - Can approve all PRs ✅
 - Can create PRs to any branch ✅
 ```
+![Success PR Approval Process](https://raw.githubusercontent.com/shivamkapasia0/PermiForce/main/SUCCESS_PR_APPROVAL_PROCESS.png)
 
 ## Troubleshooting
 
@@ -482,14 +489,14 @@ end
 
 ### Pipeline Components
 
-  
+  Below is the list of components but we can rearrange these per our requirments. 
 
 | **Component** | **File** | **Purpose** | **Key Features** |
 |--------------|----------|-------------|------------------|
-| **🚀 Main Pipeline** | `main-pipeline.yml` | Orchestrates the entire process | - PR-based triggers<br>- Environment setup<br>- Sequential checks<br>- Error handling |
-| **🔐 Access Check** | `check-access.yml` | Validates PR creation permissions | - Branch mapping<br>- Permission validation<br>- User role verification<br>- Real-time checks |
-| **✅ Approval Check** | `check-approval.yml` | Validates PR approver permissions | - Reviewer validation<br>- Role checking<br>- Approval requirements<br>- Audit logging |
-| **📊 Code Validation** | `check-code.yml` | Validates code quality | - Quality checks<br>- Standards enforcement<br>- Security scanning<br>- Performance metrics |
+| **🚀 Main Pipeline** | [`main-pipeline.yml`](https://dev.azure.com/shivamsfdcwork/PermiForce/_git/PermiForce?version=GBprod&path=/main-pipeline.yml) | Orchestrates the entire process | - PR-based triggers<br>- Environment setup<br>- Sequential checks<br>- Error handling |
+| **🔐 Access Check** | [`check-access.yml`](https://dev.azure.com/shivamsfdcwork/PermiForce/_git/PermiForce?version=GBprod&path=/check-access.yml) | Validates PR creation permissions | - Branch mapping<br>- Permission validation<br>- User role verification<br>- Real-time checks |
+| **✅ Approval Check** | [`check-approval.yml`](https://dev.azure.com/shivamsfdcwork/PermiForce/_git/PermiForce?version=GBprod&path=/check-approval.yml) | Validates PR approver permissions | - Reviewer validation<br>- Role checking<br>- Approval requirements<br>- Audit logging |
+| **📊 Code Validation** | [`check-code.yml`](https://dev.azure.com/shivamsfdcwork/PermiForce/_git/PermiForce?version=GBprod&path=/check-code.yml) | Validates code quality | - Quality checks just for demo<br>- Standards enforcement<br>- Security scanning<br>- Performance metrics |
 
 ### 🔄 Pipeline Flow
 
@@ -997,31 +1004,12 @@ steps:
    - Permit.io scales with the project
    - Centralized permission management
 
-### 🚀 Getting Started with Advanced Features
+## Thank You
 
-1. **Setup Additional Permissions**
-```bash
-# Add new permission types
-permit permission create "ACCESS_ENVIRONMENT"
-permit permission create "PUBLISH_PACKAGE"
-permit permission create "ACCESS_SECRET"
-```
+Thank you for exploring PermiForce! We hope this solution helps you implement robust role-based access control in your Azure DevOps pipelines. 
 
-2. **Configure Role-based Access**
-```bash
-# Assign permissions to roles
-permit role assign "QA_Team" "ACCESS_ENVIRONMENT:qa"
-permit role assign "Release_Manager" "PUBLISH_PACKAGE:production"
-```
+For the complete codebase, including all pipeline configurations and implementation details, please visit our Azure DevOps repository:
+[PermiForce Repository](https://dev.azure.com/shivamsfdcwork/PermiForce/_git/PermiForce/branches)
 
-3. **Set Up Monitoring**
-```bash
-# Configure alerts
-permit alert create "UnauthorizedAccess" --type "permission_denied"
-permit alert create "SecurityBreach" --type "multiple_failures"
-```
+Feel free to contribute, provide feedback, or reach out with any questions. Happy coding! 🚀
 
----
-
-For more information, contact the project maintainers or visit our documentation.
-</rewritten_file>
