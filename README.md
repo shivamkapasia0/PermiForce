@@ -353,7 +353,7 @@ The `APPROVE_PROD_PR` permission is the highest level of approval in the system:
 ### 📊 Permission Matrix
 
 | **Action** | **Developer** | **Team Lead** | **Release Manager** |
-|------------|--------------|---------------|---------------------|
+|------------|---------------|---------------|---------------------|
 | **Create QA PR** | ✅ | ✅ | ✅ |
 | **Approve QA PR** | ❌ | ✅ | ✅ |
 | **Create UAT PR** | ❌ | ✅ | ✅ |
@@ -903,3 +903,125 @@ CC-->>MP: Success/Failure
 |  `/check-pr-approval`  | POST |  `{"approvers": ["email"], "targetBranch": "branch"}`  |  `{"allowed": bool, "message": "string"}`  |
 
 |  `/health`  | GET | None |  `{"status": "string", "environment": "string"}`  |
+
+```
+
+### 🚀 Additional Use Cases of Permit.io in Azure DevOps CI/CD
+
+| **Use Case** | **Implementation** | **Benefits** | **Example Scenario** |
+|--------------|-------------------|--------------|----------------------|
+| **🔒 Environment Access Control** | Control access to different environments (Dev, QA, UAT, Prod) | - Granular environment access<br>- Secure deployment paths<br>- Environment isolation | Restrict QA environment access to QA team only |
+| **📦 Package Management** | Control who can publish/consume packages | - Secure package distribution<br>- Prevent unauthorized publishes<br>- Track package usage | Only release managers can publish to production feed |
+| **🔑 Secret Management** | Control access to secrets and variables | - Secure secret access<br>- Audit secret usage<br>- Prevent unauthorized access | Only pipeline admins can modify production secrets |
+| **🔄 Pipeline Triggers** | Control who can trigger pipelines | - Prevent unauthorized runs<br>- Track pipeline triggers<br>- Manage resource usage | Only authorized users can trigger production deployments |
+| **📝 Artifact Management** | Control artifact access and retention | - Secure artifact storage<br>- Manage artifact lifecycle<br>- Track artifact usage | Set different retention policies based on user roles |
+| **🔍 Audit and Compliance** | Track all pipeline activities | - Comprehensive audit trail<br>- Compliance reporting<br>- Activity monitoring | Generate compliance reports for security audits |
+
+### 🔄 Advanced Integration Scenarios
+
+```mermaid
+graph TD
+    A[Azure DevOps] -->|1. Environment Access| B[Permit.io]
+    A -->|2. Package Control| B
+    A -->|3. Secret Management| B
+    A -->|4. Pipeline Triggers| B
+    A -->|5. Artifact Control| B
+    B -->|6. Audit Logs| C[Compliance Dashboard]
+    B -->|7. Real-time Checks| D[Security Monitor]
+```
+
+### 🛠️ Implementation Examples
+
+1. **Environment Access Control**
+```yaml
+# Example pipeline configuration
+steps:
+- task: PermitCheck@1
+  inputs:
+    action: 'ACCESS_ENVIRONMENT'
+    environment: 'prod'
+    user: '$(Build.RequestedForEmail)'
+```
+
+2. **Package Management**
+```yaml
+# Package publish control
+steps:
+- task: PermitCheck@1
+  inputs:
+    action: 'PUBLISH_PACKAGE'
+    feed: 'production'
+    package: '$(PackageName)'
+```
+
+3. **Secret Management**
+```yaml
+# Secret access control
+steps:
+- task: PermitCheck@1
+  inputs:
+    action: 'ACCESS_SECRET'
+    secret: 'prod-database-connection'
+    user: '$(Build.RequestedForEmail)'
+```
+
+### 📊 Benefits Matrix
+
+| **Feature** | **Traditional Approach** | **Permit.io Approach** | **Advantage** |
+|------------|-------------------------|------------------------|---------------|
+| **Access Control** | Basic role-based | Fine-grained, dynamic | More precise control |
+| **Audit Trail** | Limited logging | Comprehensive tracking | Better visibility |
+| **Compliance** | Manual checks | Automated validation | Reduced effort |
+| **Security** | Static permissions | Dynamic, context-aware | Enhanced protection |
+| **Scalability** | Complex management | Centralized control | Easier maintenance |
+
+### 🔍 Real-world Scenarios
+
+1. **Multi-team Project**
+   - Different teams need different access levels
+   - Permit.io provides team-specific permissions
+   - Easy to manage cross-team collaboration
+
+2. **Compliance Requirements**
+   - Need to demonstrate access control
+   - Permit.io provides audit trails
+   - Easy to generate compliance reports
+
+3. **Security-sensitive Projects**
+   - Strict access control requirements
+   - Permit.io enables fine-grained control
+   - Real-time permission validation
+
+4. **Large-scale Deployments**
+   - Complex permission requirements
+   - Permit.io scales with the project
+   - Centralized permission management
+
+### 🚀 Getting Started with Advanced Features
+
+1. **Setup Additional Permissions**
+```bash
+# Add new permission types
+permit permission create "ACCESS_ENVIRONMENT"
+permit permission create "PUBLISH_PACKAGE"
+permit permission create "ACCESS_SECRET"
+```
+
+2. **Configure Role-based Access**
+```bash
+# Assign permissions to roles
+permit role assign "QA_Team" "ACCESS_ENVIRONMENT:qa"
+permit role assign "Release_Manager" "PUBLISH_PACKAGE:production"
+```
+
+3. **Set Up Monitoring**
+```bash
+# Configure alerts
+permit alert create "UnauthorizedAccess" --type "permission_denied"
+permit alert create "SecurityBreach" --type "multiple_failures"
+```
+
+---
+
+For more information, contact the project maintainers or visit our documentation.
+</rewritten_file>
