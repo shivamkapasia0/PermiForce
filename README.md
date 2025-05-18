@@ -2,6 +2,14 @@
 
 > **Note**: This project is a submission to the [Permit.io Authorization Challenge](https://dev.to/challenges/permit_io) on dev.to. It demonstrates the implementation of fine-grained authorization using Permit.io in a real-world DevOps scenario.
 
+> ## 🏆 Winner - Permit.io Authorization Challenge
+
+We are proud to share that this project is **one of the winners** of the [Permit.io Authorization Challenge](https://dev.to/devteam/congrats-to-the-permitio-authorization-challenge-winners-35f) hosted on DEV!
+
+> 📰 **Official Announcement:** [DEV.to Winners Post](https://dev.to/devteam/congrats-to-the-permitio-authorization-challenge-winners-35f)
+
+Thank you to [Permit.io](https://www.permit.io/) and the DEV community for organizing the hackathon and recognizing our work!
+
 ## Table of Contents
 
 - [Overview](#overview)
